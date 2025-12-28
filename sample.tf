@@ -6,7 +6,7 @@ resource "aws_instance" "myinstance" {
     instance_type = var.instance_type
     vpc_security_group_ids = ["sg-000d393420ab317b8"]
     key_name = var.key_name
-    availability_zone = "ap-south-1b"
+    availability_zone = var.availability_zone
   tags = {
     name = "myinstance1"
   }
@@ -29,6 +29,9 @@ variable "instance_type" {
 }
 variable "key_name" {
   default = "id_rsa_key"
+}
+variable "availability_zone" {
+  default = "ap-south-1b"
 }
 output "instance_public_ip" {
   value = aws_instance.myinstance.public_ip
