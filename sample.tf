@@ -13,10 +13,10 @@ provider "aws" {
 #   }
 # }
 
-data "aws_security_group" "mysg" {
+data "aws_security_group" "my-sg" {
   filter {
-    name   = "mysg"
-    values = ["mysg"]
+    name   = "my-sg"
+    values = ["my-sg"]
   }
 
   vpc_id = var.vpc_id
