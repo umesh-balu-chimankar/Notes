@@ -2,26 +2,35 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-data "aws_security_groups" "mysg" {
-  filter {
-    name   = "vpc-id"
-    values =[var.vpc_id]
-  }
-  filter {
-    name   = "group-name"
-    values = ["mysg"]
-  }
+# data "aws_security_groups" "mysg" {
+#   filter {
+#     name   = "vpc-id"
+#     values =[var.vpc_id]
+#   }
+#   filter {
+#     name   = "group-name"
+#     values = ["mysg"]
+#   }
+# }
+
+data "aws_security_group" "mysg" {
+  name   = "mysg"
+  vpc_id = var.vpc_id
 }
 
 resource "aws_instance" "myinstance" {
     ami = var.ami_id
     instance_type = var.instance_type
-    vpc_security_group_ids = data.aws_security_groups.mysg.id 
+    vpc_security_group_ids = [data.aws_security_group.mysg.id]
     key_name = var.key_name
     availability_zone = var.availability_zone
-  tags = {
-    name = local.instance_name
-  }
+    tags = {
+  Name = local.instance_name
+}
+
+  # tags = {
+  #   name = local.instance_name
+  # }
 }
 
 terraform {
