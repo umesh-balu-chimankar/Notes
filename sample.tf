@@ -14,9 +14,14 @@ provider "aws" {
 # }
 
 data "aws_security_group" "mysg" {
-  name   = "mysg"
+  filter {
+    name   = "mysg"
+    values = ["mysg"]
+  }
+
   vpc_id = var.vpc_id
 }
+
 
 resource "aws_instance" "myinstance" {
     ami = var.ami_id
