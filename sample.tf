@@ -1,6 +1,18 @@
 provider "aws" {
   region = "ap-south-1"
 }
+
+data "aws_security_groups" "mysg" {
+  filter {
+    name   = "vpc-id"
+    values =[var.vpc_id]
+  }
+  filter {
+    name   = "group-name"
+    values = ["mysg"]
+  }
+}
+
 resource "aws_instance" "myinstance" {
     ami = var.ami_id
     instance_type = var.instance_type
@@ -8,7 +20,7 @@ resource "aws_instance" "myinstance" {
     key_name = var.key_name
     availability_zone = var.availability_zone
   tags = {
-    name = "myinstance1"
+    name = local.instance_name
   }
 }
 
@@ -20,6 +32,9 @@ terraform {
   }
 }
 
+locals {
+  instance_name = "my-instance"
+}
 variable "ami_id" {
   default = "ami-087d1c9a513324697"
   description = "this is my new ami id"
@@ -32,6 +47,9 @@ variable "key_name" {
 }
 variable "availability_zone" {
   default = "ap-south-1b"
+}
+variable "vpc_id" {
+  default = "vpc-0fc56b6da92c7716b"
 }
 output "instance_public_ip" {
   value = aws_instance.myinstance.public_ip
