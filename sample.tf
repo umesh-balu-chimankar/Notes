@@ -26,7 +26,7 @@ data "aws_security_group" "my_sg" {
 resource "aws_instance" "myinstance" {
     ami = var.ami_id
     instance_type = var.instance_type
-    vpc_security_group_ids = [data.aws_security_group.my_sg.id]
+    vpc_security_group_ids = [sg-000d393420ab317b8]
     key_name = var.key_name
     availability_zone = var.availability_zone
     tags = {
