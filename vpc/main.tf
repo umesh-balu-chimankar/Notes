@@ -11,7 +11,7 @@ resource "aws_vpc" "myvpc" {
 }
 resource "aws_subnet" "pvtsubnet" {
   vpc_id                  = aws_vpc.myvpc.id
-  cidr_block              = "10.0.1.0/20"
+  cidr_block              = "10.0.0.0/20"
   availability_zone       = "ap-south-1a"
   map_public_ip_on_launch = false
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "pvtsubnet" {
 }
 resource "aws_subnet" "pubsubnet" {
   vpc_id                  = aws_vpc.myvpc.id
-  cidr_block              = "10.0.2.0/20"
+  cidr_block              = "10.0.16.0/20"
   availability_zone       = "ap-south-1b" 
   map_public_ip_on_launch = true
 
