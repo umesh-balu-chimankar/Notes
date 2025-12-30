@@ -1,17 +1,12 @@
 locals {
   instance_name = "my-instance"
 }
-
 terraform {
   backend "s3" {
     bucket = "amzn-tf-s3"
     region = "ap-south-1"
     key = "tfstate"
   }
-}
-
-provider "aws" {
-  region = "ap-south-1"
 }
 data "aws_security_group" "mysg" {
   filter {
@@ -23,7 +18,6 @@ data "aws_security_group" "mysg" {
     values = ["mysg"]
   }
 }
-
 resource "aws_instance" "myinstance" {
     ami = var.ami_id
     instance_type = var.instance_type
