@@ -18,7 +18,7 @@ resource "aws_instance" "myinstance" {
     ami = var.ami_id
     instance_type = var.instance_type
     vpc_security_group_ids = ["sg-0ea643e0e5465c1d3"]
-   # vpc_security_group_ids = data.aws_security_groups.mysg.ids
+   #vpc_security_group_ids = data.aws_security_groups.mysg.ids
     key_name = var.key_name
     availability_zone = var.availability_zone
     tags = {
