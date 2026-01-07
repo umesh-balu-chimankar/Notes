@@ -1,0 +1,17 @@
+- name: my web server
+  hosts: all
+  tasks:
+  - name: install apache2
+    package:
+      name: apache2
+      state: latest
+    when: ansible_os_family == "Debian"
+  - name: start apache2
+    service:
+      name: apache2
+      state: restarted
+      enabled: true
+  - name: deployment
+    copy:
+      src: ./index.html
+      dest: /var/www/html/index.html
