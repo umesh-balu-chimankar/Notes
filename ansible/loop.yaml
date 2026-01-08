@@ -1,4 +1,4 @@
-- name: install multiple things
+ - name: install multiple things
    hosts: all
     tasks:
      - name: print items
