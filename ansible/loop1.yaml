@@ -1,0 +1,9 @@
+- name: install vim, wget, httpd
+  hosts: all
+  yum:
+    - name: "{{item}}"
+      loop:
+       - vim
+       - wget
+       - httpd
+       - nginx
