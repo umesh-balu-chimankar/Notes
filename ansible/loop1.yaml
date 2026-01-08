@@ -8,5 +8,5 @@
       loop:
         - vim
         - wget
-        - httpd
+        - apache2
         - nginx
