@@ -1,8 +1,8 @@
-- name: Install vim, wget, httpd, nginx
+- name: Install packages
   hosts: all
   tasks:
     - name: Install packages
-      yum:
+      package:
         name: "{{ item }}"
         state: present
       loop:
