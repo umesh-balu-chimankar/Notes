@@ -1,0 +1,32 @@
+- name: Install multiple tools on RedHat
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install httpd on RedHat
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_os_family == "RedHat"
+      ignore_errors: true
+
+    - name: Install vim on RedHat
+      yum:
+        name: vim
+        state: latest
+      when: ansible_os_family == "RedHat"
+      ignore_errors: true
+
+    - name: Install wget on RedHat
+      yum:
+        name: wget
+        state: latest
+      when: ansible_os_family == "RedHat"
+      ignore_errors: true
+
+    - name: Install nginx (INTENTIONALLY WRONG NAME) on RedHat
+      yum:
+        name: nginxx   # <-- mistake here
+        state: latest
+      when: ansible_os_family == "RedHat"
+      ignore_errors: true
