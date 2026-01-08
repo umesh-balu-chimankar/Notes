@@ -1,9 +1,12 @@
-- name: install vim, wget, httpd
+- name: Install vim, wget, httpd, nginx
   hosts: all
-  yum:
-    - name: "{{item}}"
+  tasks:
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: present
       loop:
-       - vim
-       - wget
-       - httpd
-       - nginx
+        - vim
+        - wget
+        - httpd
+        - nginx
