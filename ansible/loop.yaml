@@ -1,0 +1,10 @@
+- name: install multiple things
+   hosts: all
+    tasks:
+     - name: print items
+       debug:
+        msg: "{{item}}"
+       loop:
+       - apple
+       - mango
+       - orange
