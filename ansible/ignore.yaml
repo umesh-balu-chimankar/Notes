@@ -1,0 +1,28 @@
+- name: Print system information
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    # ----------- Correct Task -----------
+    - name: Print correct system information
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostname }}"
+          - "IP Address: {{ ansible_default_ipv4.address }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "CPU Cores: {{ ansible_processor_vcpus }}"
+          - "Total Memory (MB): {{ ansible_memtotal_mb }}"
+      ignore_errors: true
+
+
+    # ----------- Incorrect Task (Mistake) -----------
+    - name: Print system information with mistake
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostnam }}"     # mistake: wrong variable
+          - "IP Address: {{ ansible_default_ipv4.adress }}"  # mistake: wrong variable
+          - "OS: {{ ansible_distributon }}"       # mistake: wrong spelling
+          - "CPU Cores: {{ ansible_cpu_vcpus }}"  # mistake: invalid variable
+          - "Total Memory: {{ ansible_memtot_mb }}" # mistake: wrong variable
+      ignore_errors: true
