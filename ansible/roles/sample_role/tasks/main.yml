@@ -1,3 +1,11 @@
-#SPDX-License-Identifier: MIT-0
----
-# tasks file for sample_role
+  - name: install apache2
+    package:
+      name: "{{pkg}}"
+      state: latest
+    when: ansible_os_family == "Debian"
+  - name: deployment
+    copy:
+      src: index.html
+      dest: /var/www/html/index.html
+    notify:
+     - start apache2
