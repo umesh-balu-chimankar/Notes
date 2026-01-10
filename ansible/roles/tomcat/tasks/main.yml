@@ -11,12 +11,21 @@
   group:
     name: "{{ tomcat_group }}"
 
-- name: Create tomcat user
+# - name: Create tomcat user
+#   user:
+#     name: "{{ tomcat_user }}"
+#     group: "{{ tomcat_group }}"
+#     home: "{{ tomcat_home }}"
+#     shell: /bin/false
+
+- name: Ensure tomcat user exists
   user:
     name: "{{ tomcat_user }}"
     group: "{{ tomcat_group }}"
-    home: "{{ tomcat_home }}"
     shell: /bin/false
+    state: present
+    system: yes
+    create_home: no
 
 - name: Download Tomcat
   get_url:
