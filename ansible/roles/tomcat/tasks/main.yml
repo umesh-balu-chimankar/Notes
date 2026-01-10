@@ -68,10 +68,25 @@
   notify: restart tomcat
 
 # 8. Deploy static website
+# - name: Deploy static website  
+#   copy:
+#     src: "{{ website_src }}"
+#     dest: "{{ website_dest }}"
+#   notify: restart tomcat
+
+# Create ROOT directory
+- name: Ensure ROOT directory exists
+  file:
+    path: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+
+# Deploy website
 - name: Deploy static website  
   copy:
     src: "{{ website_src }}"
-    dest: "{{ website_dest }}"
+    dest: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT/"
   notify: restart tomcat
 
 # 9. Start Tomcat
