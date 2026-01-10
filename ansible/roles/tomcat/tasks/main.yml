@@ -2,19 +2,12 @@
 ---
 # tasks file for tomcat
 
-# 1. Install Java on Debian/Ubuntu
-- name: Install Java on Debian
+# 1. Install Java on RedHat/CentOS/Amazon
+- name: Install Java on RedHat Family
   apt:
     name: "{{ java_package }}"
-    state: latest
-  when: ansible_os_family == "Debian"
-
-# 1b. Install Java on RedHat/CentOS/Amazon
-- name: Install Java on RedHat Family
-  yum:
-    name: java-11-openjdk
-    state: latest
-  when: ansible_os_family == "RedHat"
+    state: present
+    update_cache: yes
 
 # 2. Create group
 - name: Create tomcat group
