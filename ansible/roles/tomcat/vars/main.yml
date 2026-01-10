@@ -1,4 +1,8 @@
-#SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: MIT-0
 ---
-# vars file for tomcat
-java_package: openjdk-11-jdk
+
+tomcat_version: 9.0.89
+tomcat_home: /opt/tomcat
+tomcat_user: tomcat
+tomcat_group: tomcat
+java_package: openjdk-17-jdk

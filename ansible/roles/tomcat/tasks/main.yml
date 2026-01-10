@@ -1,104 +1,51 @@
 # SPDX-License-Identifier: MIT-0
 ---
-# tasks file for tomcat
 
-# 1. Install Java on RedHat/CentOS/Amazon
-# - name: Install Java on RedHat Family
-#   apt:
-#     name: "{{ java_package }}"
-#     state: present
-#     update_cache: yes
-
-- name: Install Java on RedHat Family
-  yum:
+- name: Install Java
+  apt:
     name: "{{ java_package }}"
     state: present
-  when: ansible_os_family == "RedHat"
+    update_cache: yes
 
-
-# 2. Create group
 - name: Create tomcat group
   group:
     name: "{{ tomcat_group }}"
 
-# 3. Create user
 - name: Create tomcat user
   user:
     name: "{{ tomcat_user }}"
     group: "{{ tomcat_group }}"
+    home: "{{ tomcat_home }}"
     shell: /bin/false
 
-# 4. Download Tomcat package
-- name: Download tomcat tar file
+- name: Download Tomcat
   get_url:
     url: "https://archive.apache.org/dist/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
     dest: /tmp/tomcat.tar.gz
 
-# 4.1 Create Tomcat installation directory
-- name: Create tomcat install directory
+- name: Create tomcat directory
   file:
-    path: "{{ tomcat_install_dir }}"
+    path: "{{ tomcat_home }}"
     state: directory
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_group }}"
-    mode: '0755'
 
-# 5. Extract Tomcat
 - name: Extract Tomcat
   unarchive:
     src: /tmp/tomcat.tar.gz
-    dest: "{{ tomcat_install_dir }}"
+    dest: "{{ tomcat_home }}"
     remote_src: yes
-    creates: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}"
+    extra_opts: [ "--strip-components=1" ]
 
-# # 5. Extract Tomcat
-# - name: Extract Tomcat
-#   unarchive:
-#     src: /tmp/tomcat.tar.gz
-#     dest: "{{ tomcat_install_dir }}"
-#     remote_src: yes
-#     creates: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}"
-
-# 6. Change ownership
 - name: Set permissions
   file:
-    path: "{{ tomcat_install_dir }}"
+    path: "{{ tomcat_home }}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_group }}"
     recurse: yes
 
-# 7. Tomcat systemd service
-- name: Deploy Tomcat service file
-  template:
-    src: tomcat.service.j2
-    dest: /etc/systemd/system/tomcat.service
-  notify: restart tomcat
-
-# 8. Deploy static website
-# - name: Deploy static website  
-#   copy:
-#     src: "{{ website_src }}"
-#     dest: "{{ website_dest }}"
-#   notify: restart tomcat
-
-# Create ROOT directory
-- name: Ensure ROOT directory exists
-  file:
-    path: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
-    state: directory
+- name: Copy index.jsp page
+  copy:
+    src: index.jsp
+    dest: "{{ tomcat_home }}/webapps/ROOT/index.jsp"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_group }}"
-
-# Deploy website
-- name: Deploy static website  
-  copy:
-    src: "{{ website_src }}"
-    dest: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT/"
-  notify: restart tomcat
-
-# 9. Start Tomcat
-- name: Start Tomcat
-  systemd:
-    name: tomcat
-    state: started
-    enabled: yes
+  notify: Start Tomcat
