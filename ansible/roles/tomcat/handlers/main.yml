@@ -1,3 +1,7 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for tomcat
+- name: restart tomcat
+  systemd:
+    name: tomcat
+    state: restarted

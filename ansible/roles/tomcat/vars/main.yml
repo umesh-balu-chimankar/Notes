@@ -1,3 +1,4 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # vars file for tomcat
+java_package: openjdk-11-jdk
