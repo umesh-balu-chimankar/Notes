@@ -6,7 +6,7 @@ RUN apt install openjdk-21-jdk -y
 ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.113/bin/apache-tomcat-9.0.113.tar.gz /opt
 WORKDIR /opt
 RUN tar -xzf apache-tomcat-9.0.113.tar.gz -C /opt 
-ENV key=department dev
+ENV key=value
 #ENV department dev
 EXPOSE 8080
 WORKDIR /notes/docker/apache-tomcat-9.0.113/bin
