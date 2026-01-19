@@ -8,6 +8,6 @@ WORKDIR /opt
 RUN tar -xzf apache-tomcat-9.0.113.tar.gz -C /opt 
 ENV department dev
 EXPOSE 8080
-WORKDIR /batch15/docker/apache-tomcat-9.0.113/bin
+WORKDIR /notes/docker/apache-tomcat-9.0.113/bin
 CMD [ "./catalina.sh", "run" ]
 #ENTRYPOINT ["./catalina.sh", "run" ]
