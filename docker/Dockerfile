@@ -28,14 +28,22 @@
 ######################################
 
 FROM ubuntu:22.04
+
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-RUN apt-get install openjdk-21-jdk -y curl
 ENV TOMCAT_VERSION=9.0.113
 
-RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
-| tar -xzf -C /opt
-WORKDIR /opt/apache-tomcat-{TOMCAT_VERSION}/bin
+# Install Java & curl
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk curl && \
+    apt-get clean
+
+# Download and extract Tomcat
+RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt && \
+    rm apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
+WORKDIR /opt/apache-tomcat-${TOMCAT_VERSION}/bin
+
 EXPOSE 8080
-# start tomcat
-CMD [ "./catalina.sh", "run" ]
+
+CMD ["./catalina.sh", "run"]
