@@ -30,7 +30,9 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
-    apt-get install openjdk-21-jdk -y curl
+    apt-get install -y openjdk-21-jdk curl
+# RUN apt-get update && \
+#     apt-get install openjdk-21-jdk -y curl
 ENV TOMCAT_VERSION=9.0.113
 
 RUN curl https://dlcdn.apache.org/tomcat/tomcat-9/v{TOMCAT_VERSION}/bin/apache-tomcat-{TOMCAT_VERSION}.tar.gz \
