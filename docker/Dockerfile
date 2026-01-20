@@ -27,26 +27,21 @@
 
 ######################################
 
-# Switching to 24.04 ensures OpenJDK 21 is in the default repositories
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TOMCAT_VERSION=9.0.98
-
-# Install Java & curl
 RUN apt-get update && \
     apt-get install -y openjdk-21-jdk curl && \
-    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Download and extract Tomcat
-# Note: Ensure the TOMCAT_VERSION exists on the Apache CDN, or this will fail.
-RUN curl -O https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt && \
-    rm apache-tomcat-${TOMCAT_VERSION}.tar.gz
+ENV TOMCAT_VERSION=9.0.113
+
+RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+    | tar -xz -C /opt
 
 WORKDIR /opt/apache-tomcat-${TOMCAT_VERSION}/bin
 
 EXPOSE 8080
 
 CMD ["./catalina.sh", "run"]
+
