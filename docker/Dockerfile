@@ -39,7 +39,8 @@ RUN apk add --no-cache curl tar && \
     tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
 
 # --- Stage 2: Final image ---
-FROM openjdk:17-jdk-slim
+#FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 
 ENV CATALINA_HOME=/opt/tomcat
 ENV PATH=$CATALINA_HOME/bin:$PATH
