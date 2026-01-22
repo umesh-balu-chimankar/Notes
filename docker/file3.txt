@@ -1,0 +1,18 @@
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk curl && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV TOMCAT_VERSION=9.0.113
+
+RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+    | tar -xz -C /opt
+
+WORKDIR /opt/apache-tomcat-${TOMCAT_VERSION}/bin
+
+EXPOSE 8080
+
+CMD ["./catalina.sh", "run"]
+
