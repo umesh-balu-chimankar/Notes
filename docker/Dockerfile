@@ -15,10 +15,33 @@
 # CMD [ "./catalina.sh", "run" ]
 # #ENTRYPOINT ["./catalina.sh", "run" ]
 
-FROM ubuntu:20.04
-RUN apt-get update
+#######################################################
+
+# FROM ubuntu:20.04
+# RUN apt-get update
+# ENV DEBIAN_FRONTEND=noninteractive
+# RUN apt-get install apache2 -y
+# COPY index.html /var/www/html/index.html
+# EXPOSE 80
+# CMD [ "apache2ctl", "-D", "FOREGROUND" ]
+
+########################################################
+
+FROM ubuntu:latest
+
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get install apache2 -y
-COPY index.html /var/www/html/index.html
-EXPOSE 80
-CMD [ "apache2ctl", "-D", "FOREGROUND" ]
+RUN apt-get update && \
+    apt-get install -y openjdk-21-jdk curl && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV TOMCAT_VERSION=9.0.113
+
+RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
+    | tar -xz -C /opt
+
+WORKDIR /opt/apache-tomcat-${TOMCAT_VERSION}/bin
+
+EXPOSE 8080
+
+CMD ["./catalina.sh", "run"]
+
