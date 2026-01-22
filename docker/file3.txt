@@ -1,18 +1,21 @@
-FROM ubuntu:latest
+# --- Stage 1: Download and extract Tomcat ---
+FROM alpine:3.20 as downloader
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
-    apt-get install -y openjdk-21-jdk curl && \
-    rm -rf /var/lib/apt/lists/*
+ENV TOMCAT_VERSION=9.0.107
+WORKDIR /tmp
 
-ENV TOMCAT_VERSION=9.0.113
+RUN apk add --no-cache curl tar && \
+    curl -O https://downloads.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+    tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz
 
-RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
-    | tar -xz -C /opt
+# --- Stage 2: Final image ---
+FROM openjdk:17-jdk-slim
 
-WORKDIR /opt/apache-tomcat-${TOMCAT_VERSION}/bin
+ENV CATALINA_HOME=/opt/tomcat
+ENV PATH=$CATALINA_HOME/bin:$PATH
+VOLUME [ "/data" ]
+COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
 
 EXPOSE 8080
 
-CMD ["./catalina.sh", "run"]
-
+CMD ["catalina.sh", "run"]
