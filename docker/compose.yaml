@@ -1,0 +1,17 @@
+services:
+  webserver:
+    image: umeshchimankar03/notes:apache2
+    ports:
+      - 80:80
+    volumes:
+      - /opt/data:/var/www/html
+  tomserver:
+    image: umeshchimankar03/notes:tomcatv1
+    ports:
+      - 8080:8080
+    environment: 
+      department: "devops"
+  database:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: admin123 
