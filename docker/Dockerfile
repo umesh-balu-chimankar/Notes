@@ -27,7 +27,8 @@
 
 ########################################################
 
-# --- Stage 1: Download and extract Tomcat ---
+#multistage dockerfile
+#--- Stage 1: Download and extract Tomcat ---
 FROM alpine:3.20 as downloader
 
 ENV TOMCAT_VERSION=9.0.107
@@ -48,3 +49,4 @@ COPY --from=downloader /tmp/apache-tomcat-* $CATALINA_HOME
 EXPOSE 8080
 
 CMD ["catalina.sh", "run"]
+
